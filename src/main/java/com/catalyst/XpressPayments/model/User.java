@@ -21,11 +21,13 @@ public class User implements UserDetails {
     @GeneratedValue
     private Integer id;
 
-    private String firstName;
-
     private String lastName;
 
+    private String firstName;
+
     private String email;
+
+    private String phoneNumber;
 
     private String password;
 

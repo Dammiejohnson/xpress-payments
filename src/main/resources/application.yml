@@ -1,14 +1,18 @@
 spring:
+  config:
+    import: emv.yml
   jpa:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: ${DB_STRATEGY}
   datasource:
-    platform: postgres
-    url: jdbc:postgresql://localhost:5432/db
-    username: postgres
-    password: password
-    driverClassName: org.postgresql.Driver
+    platform: ${DB_PLATFORM}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driverClassName: ${DB_DRIVER}
+
+
 
 
