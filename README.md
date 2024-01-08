@@ -81,7 +81,8 @@ To obtain an authentication token, send a POST request to the `/api/v1/auth/logI
 
 ### Purchase Airtime
 
-Access the airtime purchase endpoint by making a POST request to `/api/v1/airtime/purchase`. Ensure you include a valid JWT token in the request header.
+Access the airtime purchase endpoint by making a POST request to `/api/v1/airtime/purchase` and GET request to `/api/v1/airtime/status` to track airtime status. Ensure you include a valid JWT token in the request header.
+
 
 ### Token Requirements
 
