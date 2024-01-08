@@ -92,6 +92,7 @@ Include the JWT token in the request header as follows:
    ```
 
 ## Unit Tests
+Unit tests were carried out using Junit5 to test the repository, service and the hash generation.
 
 ### Access Secured Endpoint Without Token
 
@@ -103,4 +104,4 @@ Verify that accessing the airtime purchase endpoint with a valid token returns a
 
 
 ## Documentation
-![Sample of Postman Doc](https://ibb.co/dD6CqTM)
+Click [here](https://documenter.getpostman.com/view/19838025/2s9YsJBXZU) to view API Documentation 

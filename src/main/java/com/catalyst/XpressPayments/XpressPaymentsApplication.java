@@ -25,6 +25,7 @@ public class XpressPaymentsApplication {
 			user.setFirstName("Damilola");
 			user.setLastName("Sanni");
 			user.setEmail("test@gmail.com");
+			user.setPhoneNumber("098765444");
 			user.setPassword(passwordEncoder.encode("Olaitan123!!"));
 			user.setRole(Role.USER);
 			userRepository.save(user);

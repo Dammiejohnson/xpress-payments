@@ -1,16 +1,13 @@
 package com.catalyst.XpressPayments.service;
 
-import com.catalyst.XpressPayments.exception.UserNotFoundException;
+import com.catalyst.XpressPayments.exception.NotFoundException;
 import com.catalyst.XpressPayments.model.User;
 import com.catalyst.XpressPayments.repository.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,7 +26,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testFindById_UserFound() throws UserNotFoundException {
+    void testFindById_UserFound() throws NotFoundException {
         User user = new User();
         user.setId(1);
         userRepository.save(user);
@@ -40,7 +37,7 @@ class UserServiceImplTest {
 
 
     @Test
-    void testFindUserByEmail_UserFound() throws UserNotFoundException {
+    void testFindUserByEmail_UserFound() throws NotFoundException {
         User user = new User();
         user.setEmail("testUser@gmail.com");
         userRepository.save(user);
@@ -51,6 +48,6 @@ class UserServiceImplTest {
 
     @Test
     void testFindUserByEmail_UserNotFound() {
-        assertThrows(UserNotFoundException.class, () -> userService.findUserByEmail("wrongUsert@gmail.com"));
+        assertThrows(NotFoundException.class, () -> userService.findUserByEmail("wrongUsert@gmail.com"));
     }
 }

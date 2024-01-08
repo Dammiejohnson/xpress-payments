@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(InvalidEmailException.class)
-    public ResponseEntity<APIError> handleException(InvalidEmailException e){
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<APIError> handleException(InvalidRequestException e){
         e.printStackTrace();
         return ResponseEntity.badRequest().body(APIError.builder()
                 .status(HttpStatus.BAD_REQUEST)
@@ -28,20 +28,12 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(XpressPaymentException.class)
-    public ResponseEntity<APIError> handleException(XpressPaymentException e){
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<APIError> handleException(NotFoundException e){
         e.printStackTrace();
         return ResponseEntity.badRequest().body(APIError.builder()
                 .status(HttpStatus.BAD_REQUEST)
-                .message(e.getLocalizedMessage())
-                .build());
-    }
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<APIError> handleException(UserNotFoundException e){
-        e.printStackTrace();
-        return ResponseEntity.badRequest().body(APIError.builder()
-                .status(HttpStatus.BAD_REQUEST)
-                .message(e.getLocalizedMessage())
+                .message("Not Found!!")
                 .build());
     }
 

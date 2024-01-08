@@ -1,6 +1,6 @@
 package com.catalyst.XpressPayments.service;
 
-import com.catalyst.XpressPayments.exception.UserNotFoundException;
+import com.catalyst.XpressPayments.exception.NotFoundException;
 import com.catalyst.XpressPayments.model.User;
 import com.catalyst.XpressPayments.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +13,13 @@ public class UserServiceImpl implements  UserService{
     private final UserRepository userRepository;
 
     @Override
-    public User findById(Integer id) throws UserNotFoundException {
+    public User findById(Integer id) throws NotFoundException {
         return userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException("User not found"));
+                () -> new NotFoundException("User not found"));
     }
 
     @Override
-    public User findUserByEmail(String email) throws UserNotFoundException {
-        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User cannot be found"));
+    public User findUserByEmail(String email) throws NotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User cannot be found"));
     }
 }

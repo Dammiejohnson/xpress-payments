@@ -3,10 +3,18 @@ package com.catalyst.XpressPayments.service;
 import com.catalyst.XpressPayments.dto.CustomerDetail;
 import com.catalyst.XpressPayments.dto.PurchaseAirtimeRequest;
 import com.catalyst.XpressPayments.dto.PurchaseAirtimeResponse;
+import com.catalyst.XpressPayments.model.Airtime;
+import com.catalyst.XpressPayments.model.User;
+import com.catalyst.XpressPayments.repository.AirtimeRepository;
+import com.catalyst.XpressPayments.repository.UserRepository;
 import com.squareup.okhttp.*;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Hex;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import static com.catalyst.XpressPayments.utils.Helpers.*;
 import javax.crypto.Mac;
@@ -14,14 +22,19 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PurchaseAirtimeServiceImpl implements PurchaseAirtimeService {
 
 
     private static String PUBLIC_KEY;
 
     private static String PRIVATE_KEY;
+
+    private final AirtimeRepository airtimeRepository;
+    private final UserRepository userRepository;
 
     @Value("${PUBLIC_KEY}")
     private void setPublicKey(String publicKey) {
@@ -67,6 +80,19 @@ public class PurchaseAirtimeServiceImpl implements PurchaseAirtimeService {
         String dataValue = responseBodyAsJson.get("data").toString();
 
         CustomerDetail airtimeDetails = mapDataToAirtimeDetails(dataValue);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String email = userDetails.getUsername();
+        Optional<User> loggedInUser = userRepository.findByEmail(email);
+
+        Airtime airtime = Airtime.builder()
+                .user(loggedInUser.get())
+                .requestId(responseBodyAsJson.getString("requestId"))
+                .responseCode(responseBodyAsJson.getString("responseCode"))
+                .responseMessage(responseBodyAsJson.getString("responseMessage"))
+                .build();
+        airtimeRepository.save(airtime);
 
         return PurchaseAirtimeResponse.builder()
                 .referenceId(responseBodyAsJson.getString("referenceId"))

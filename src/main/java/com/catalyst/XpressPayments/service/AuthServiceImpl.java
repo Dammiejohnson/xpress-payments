@@ -4,9 +4,10 @@ import com.catalyst.XpressPayments.auth.requests.LoginRequest;
 import com.catalyst.XpressPayments.auth.requests.SignUpRequest;
 import com.catalyst.XpressPayments.auth.responses.LogInResponse;
 import com.catalyst.XpressPayments.auth.responses.SignUpResponse;
+import com.catalyst.XpressPayments.exception.NotFoundException;
+import com.catalyst.XpressPayments.exception.UserAlreadyExistException;
 import com.catalyst.XpressPayments.security.JwtService;
-import com.catalyst.XpressPayments.exception.InvalidEmailException;
-import com.catalyst.XpressPayments.exception.XpressPaymentException;
+import com.catalyst.XpressPayments.exception.InvalidRequestException;
 import com.catalyst.XpressPayments.model.Role;
 import com.catalyst.XpressPayments.model.User;
 import com.catalyst.XpressPayments.repository.UserRepository;
@@ -29,13 +30,13 @@ public class AuthServiceImpl implements  AuthService{
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public SignUpResponse signUp(SignUpRequest request) throws XpressPaymentException, InvalidEmailException {
+    public SignUpResponse signUp(SignUpRequest request) throws UserAlreadyExistException, InvalidRequestException {
         isValidEmail(request.getEmail());
         isValidPassword(request.getPassword());
         isNameValid(request.getFirstName(), request.getLastName());
         Optional<User> userOptional = userRepository.findByEmail(request.getEmail().toLowerCase());
         if (userOptional.isPresent()) {
-            throw new XpressPaymentException("User with this email address already exist !!!");
+            throw new UserAlreadyExistException ( "User with this email address already exist !!!");
         } else {
             User user = User.builder()
                     .firstName(request.getFirstName())
@@ -49,14 +50,14 @@ public class AuthServiceImpl implements  AuthService{
             User savedUser = userRepository.save(user);
 
             return SignUpResponse.builder()
-                    .message(savedUser.getEmail() + " sign up is successful, Log in to continue.")
+                    .message(savedUser.getEmail() + " Sign up is successful, Log in to continue.")
                     .build();
         }
 
     }
 
     @Override
-    public LogInResponse login(LoginRequest request) {
+    public LogInResponse login(LoginRequest request) throws InvalidRequestException {
         authenticationManager.authenticate(
                  new UsernamePasswordAuthenticationToken(
                          request.getEmail(),
@@ -74,25 +75,25 @@ public class AuthServiceImpl implements  AuthService{
     }
 
 
-    private void isValidEmail(String email) throws InvalidEmailException {
+    private void isValidEmail(String email) throws InvalidRequestException {
 //        email must only contain letters, numbers, underscores, hyphens, and periods
 //        email must contain an @ symbol
 //        email must contain . after @ symbol
         if (!email.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")) {
-            throw new InvalidEmailException(email + " is not a valid Email address");
+            throw new InvalidRequestException(email + " is not a valid Email address");
         }
     }
 
-    private void isValidPassword(String password) throws XpressPaymentException {
+    private void isValidPassword(String password) throws InvalidRequestException {
 //        password must have at least 8 characters, 1 upper case, 1 number, 1 special character
 //        return password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!])(?!.*\\s).{8,}$");
         if (!password.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[~@$!%^(#){/}*?&])[A-Za-z\\d@~$!%^(#){/}*?&]{8,}")) {
-            throw new XpressPaymentException("Invalid password: Password must have at least 8 characters, 1 upper case, 1 number, 1 special character");
+            throw new InvalidRequestException("Invalid password: Password must have at least 8 characters, 1 upper case, 1 number, 1 special character");
         }
     }
 
-    private void isNameValid(String firstname, String lastname) throws XpressPaymentException {
+    private void isNameValid(String firstname, String lastname) throws InvalidRequestException {
         if (!firstname.matches("^[A-Za-z-']{2,30}$") || !lastname.matches("^[A-Za-z-']{2,30}$"))
-            throw new XpressPaymentException("Invalid Firstname or Lastname");
+            throw new InvalidRequestException("Invalid Firstname or Lastname");
     }
 }

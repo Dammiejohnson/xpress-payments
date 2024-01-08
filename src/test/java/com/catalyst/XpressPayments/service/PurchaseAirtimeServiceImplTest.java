@@ -9,12 +9,17 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class PurchaseAirtimeServiceImplTest {
 
-    private String xpressPrivateKey = "9v7pZhO4o3VKWreYDReTuDF1LHQ47sdW_CVASPRV";
+    private static String PRIVATE_KEY;
+
+    @Value("${PRIVATE_KEY}")
+    private void setPrivateKey(String privateKey) {
+        PRIVATE_KEY = privateKey;
+    }
 
     @Test
     void testCalculateHMAC512() {
         String purchaseAirtimeObject = "{\"uniqueCode\":\"MTN_24207\",\"requestId\":\"123456\",\"details\":{\"amount\":100,\"phoneNumber\":\"08134740814\"}}";;
-        String result = PurchaseAirtimeServiceImpl.calculateHMAC512(purchaseAirtimeObject, xpressPrivateKey);
+        String result = PurchaseAirtimeServiceImpl.calculateHMAC512(purchaseAirtimeObject, PRIVATE_KEY);
         assertNotNull(result);
     }
 
