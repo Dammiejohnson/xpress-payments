@@ -24,6 +24,7 @@ public class Airtime {
 
     @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
+    @JsonIgnore
     private User user;
 
 

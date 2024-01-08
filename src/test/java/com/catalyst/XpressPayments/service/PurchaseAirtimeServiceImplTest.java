@@ -19,7 +19,7 @@ class PurchaseAirtimeServiceImplTest {
     @Test
     void testCalculateHMAC512() {
         String purchaseAirtimeObject = "{\"uniqueCode\":\"MTN_24207\",\"requestId\":\"123456\",\"details\":{\"amount\":100,\"phoneNumber\":\"08134740814\"}}";;
-        String result = PurchaseAirtimeServiceImpl.calculateHMAC512(purchaseAirtimeObject, PRIVATE_KEY);
+        String result = AirtimeServiceImpl.calculateHMAC512(purchaseAirtimeObject, PRIVATE_KEY);
         assertNotNull(result);
     }
 

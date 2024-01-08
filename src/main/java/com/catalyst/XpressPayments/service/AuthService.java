@@ -5,10 +5,9 @@ import com.catalyst.XpressPayments.auth.requests.SignUpRequest;
 import com.catalyst.XpressPayments.auth.responses.LogInResponse;
 import com.catalyst.XpressPayments.auth.responses.SignUpResponse;
 import com.catalyst.XpressPayments.exception.InvalidRequestException;
-import com.catalyst.XpressPayments.exception.NotFoundException;
-import com.catalyst.XpressPayments.exception.UserAlreadyExistException;
+
 
 public interface AuthService {
-    SignUpResponse signUp(SignUpRequest request) throws UserAlreadyExistException, InvalidRequestException;
+    SignUpResponse signUp(SignUpRequest request) throws InvalidRequestException;
     LogInResponse login(LoginRequest request) throws InvalidRequestException;
 }

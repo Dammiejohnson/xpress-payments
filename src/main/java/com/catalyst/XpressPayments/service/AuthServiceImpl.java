@@ -4,8 +4,6 @@ import com.catalyst.XpressPayments.auth.requests.LoginRequest;
 import com.catalyst.XpressPayments.auth.requests.SignUpRequest;
 import com.catalyst.XpressPayments.auth.responses.LogInResponse;
 import com.catalyst.XpressPayments.auth.responses.SignUpResponse;
-import com.catalyst.XpressPayments.exception.NotFoundException;
-import com.catalyst.XpressPayments.exception.UserAlreadyExistException;
 import com.catalyst.XpressPayments.security.JwtService;
 import com.catalyst.XpressPayments.exception.InvalidRequestException;
 import com.catalyst.XpressPayments.model.Role;
@@ -30,13 +28,13 @@ public class AuthServiceImpl implements  AuthService{
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public SignUpResponse signUp(SignUpRequest request) throws UserAlreadyExistException, InvalidRequestException {
+    public SignUpResponse signUp(SignUpRequest request) throws InvalidRequestException {
         isValidEmail(request.getEmail());
         isValidPassword(request.getPassword());
         isNameValid(request.getFirstName(), request.getLastName());
         Optional<User> userOptional = userRepository.findByEmail(request.getEmail().toLowerCase());
         if (userOptional.isPresent()) {
-            throw new UserAlreadyExistException ( "User with this email address already exist !!!");
+            throw new InvalidRequestException ( "User with this email address already exist !!!");
         } else {
             User user = User.builder()
                     .firstName(request.getFirstName())

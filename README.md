@@ -93,6 +93,7 @@ Include the JWT token in the request header as follows:
 
 ## Unit Tests
 Unit tests were carried out using Junit5 to test the repository, service and the hash generation.
+The Controller endpoints were tested via PostMan
 
 ### Access Secured Endpoint Without Token
 

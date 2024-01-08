@@ -17,16 +17,7 @@ public class GlobalExceptionHandler {
                 .message(e.getLocalizedMessage())
                 .build());
     }
-
-    @ExceptionHandler(UserAlreadyExistException.class)
-    public ResponseEntity<APIError> handleException(UserAlreadyExistException e){
-        e.printStackTrace();
-        return ResponseEntity.badRequest().body(APIError.builder()
-                .status(HttpStatus.BAD_REQUEST)
-                .message(e.getLocalizedMessage())
-                .build());
-    }
-
+    
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<APIError> handleException(NotFoundException e){
