@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class PurchaseAirtimeServiceImplTest {
+class AirtimeServiceImplTest {
 
     private static String PRIVATE_KEY;
 
@@ -18,7 +18,7 @@ class PurchaseAirtimeServiceImplTest {
 
     @Test
     void testCalculateHMAC512() {
-        String purchaseAirtimeObject = "{\"uniqueCode\":\"MTN_24207\",\"requestId\":\"123456\",\"details\":{\"amount\":100,\"phoneNumber\":\"08134740814\"}}";;
+        String purchaseAirtimeObject = "{\"uniqueCode\":\"MTN_24207\",\"requestId\":\"1236\",\"details\":{\"amount\":100,\"phoneNumber\":\"08134740814\"}}";;
         String result = AirtimeServiceImpl.calculateHMAC512(purchaseAirtimeObject, PRIVATE_KEY);
         assertNotNull(result);
     }
